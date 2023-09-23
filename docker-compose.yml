@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  go-postgres:
+    image: postgres:latest
+    container_name: go-postgres-db
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_apps_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+
+  go-pgAdmin-apps:
+    depends_on:
+      - go-postgres
+    image: dpage/pgadmin4
+    container_name: go-pgAdmin
+    env_file:
+      - ./.env
+    ports:
+      - "5050:80"
+
+volumes:
+  postgres_apps_data:
+# docker compose up -d

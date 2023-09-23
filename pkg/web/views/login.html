@@ -1,0 +1,99 @@
+<main>
+    <h1 class="text-center text-3xl font-bold mt-36 mb-6">
+        {{ .Title }}
+    </h1>
+    <p class="text-center text-xl text-indigo-700 font-medium mb-6">
+        {{ .Subtitle }}
+    </p>
+
+    <form class="mt-16 mb-8 w-fit md:w-[400px] mx-auto bg-zinc-800 p-8 rounded-xl flex flex-col gap-4" id="loginForm">
+        <input
+            class="rounded-md focus:outline-none focus:ring focus:ring-blue-400 w-56 md:w-full text-xl px-4 py-2 bg-slate-700"
+            name="email" type="text" placeholder="Enter your email…" autofocus required>
+        <input
+            class="rounded-md focus:outline-none focus:ring focus:ring-blue-400 w-56 md:w-full text-xl px-4 py-2 bg-slate-700"
+            name="password" type="password" placeholder="Enter your password…" required>
+
+        <input class="bg-sky-600 hover:bg-sky-400 rounded-md text-xl px-4 py-2" type="submit" value="Login">
+    </form>
+
+    <a class="text-center text-lg font-semibold text-amber-600 hover:text-amber-400 mx-auto block" href="/signup">
+        You still do not have an account?
+    </a>
+</main>
+
+{{template "partials/footer" .}}
+
+<script>
+    /* Login handling */
+    const loginForm = document.getElementById("loginForm");
+
+    loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const email = loginForm.elements["email"].value;
+        const password = loginForm.elements["password"].value;
+
+        let errors = '';
+        const resetForm = () => {
+            loginForm.elements["email"].value = "";
+            loginForm.elements["password"].value = "";
+            errors = '';
+        }
+
+        // Es importante aquí añadir el punto y coma ";"
+        // para que JS no se confunda con la función anónima
+        // de ejecución inmediata
+
+        // console.log({ email, password });
+
+        (async () => {
+            const rawResponse = await fetch('api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            let content = await rawResponse.json();
+
+            // console.log(content);
+            if (`${JSON.stringify(content)}`.includes("SignInInput.Email")) {
+                errors += '<li>▷ Badly formed email!</li>';
+            }
+
+            if (`${JSON.stringify(content)}`.includes("SignInInput.Password")) {
+                errors += '<li>▷ The password must be at least 6 characters!</li>';
+            }
+
+            if (`${JSON.stringify(content)}`.includes("fail")) {
+                errors += '<li>▷ Invalid email or Password!</li>';
+            }
+
+            errors.length
+                ? Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    html: `<ul style="text-align: start;">${errors}</ul>`,
+                })
+                : null;
+
+            resetForm();
+
+            if (`${JSON.stringify(content)}`.includes("success")) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Ok!',
+                    text: 'You have successfully logged in!',
+                    confirmButtonText: 'Accept',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.replace('/profile');
+                    }
+                });
+            };
+        })();
+    });
+
+</script>

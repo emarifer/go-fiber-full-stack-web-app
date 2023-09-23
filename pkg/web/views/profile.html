@@ -1,0 +1,26 @@
+{{template "partials/header" }}
+
+<main>
+    <h1 class="text-center text-3xl font-bold mt-36 mb-6">
+        {{ .Title }}
+    </h1>
+
+    <ul
+        class="mt-16 mb-8 w-fit md:w-[400px] mx-auto bg-zinc-800 p-8 rounded-xl flex flex-col gap-2 text-amber-600 font-semibold text-sm">
+        <li
+            class="text-left px-2 py-1 rounded-lg text-emerald-400 hover:font-bold hover:bg-purple-600 hover:text-amber-400">
+            ▷&nbsp;&nbsp;Id:&nbsp;{{ .User.ID }}</li>
+        <li
+            class="text-left px-2 py-1 rounded-lg text-emerald-400 hover:font-bold hover:bg-purple-600 hover:text-amber-400">
+            ▷&nbsp;&nbsp;Name:&nbsp;{{ .User.Name }}</li>
+        <li
+            class="text-left px-2 py-1 rounded-lg text-emerald-400 hover:font-bold hover:bg-purple-600 hover:text-amber-400">
+            ▷&nbsp;&nbsp;Email:&nbsp;{{ .User.Email }}</li>
+        <li
+            class="text-left px-2 py-1 rounded-lg text-emerald-400 hover:font-bold hover:bg-purple-600 hover:text-amber-400">
+            ▷&nbsp;&nbsp;CreatedAt:&nbsp;{{ .Date }}</li>
+    </ul>
+
+</main>
+
+{{template "partials/footer" .}}

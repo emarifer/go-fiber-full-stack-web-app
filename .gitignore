@@ -1,0 +1,4 @@
+tmp
+node_modules
+pkg/web/public/css/output.css
+cmd/main/main
