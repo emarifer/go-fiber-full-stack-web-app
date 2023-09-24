@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// Los campos que pueden ser «nil», porque se pasan vacíos a GORM
+// Los campos que pueden ser «nil», porque se pasan vacíos a GORM,
 // tienen que ser de tipo puntero
 type User struct {
 	ID        *uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primary_key"`
@@ -48,7 +48,7 @@ type UserResponse struct {
 
 func FilterUserRecord(user *User) UserResponse {
 	return UserResponse{
-		ID:        *user.ID,
+		ID:        *user.ID, // Al ser puntero podemos checkear sobre nil
 		Name:      user.Name,
 		Email:     user.Email,
 		Role:      *user.Role,

@@ -10,10 +10,10 @@ Besides the obvious prerequisite of having Go!, Docker and Nodejs installed, we 
 $ docker compose up -d  # run at the root of the project.
 ```
 
-This will create 2 Docker containers (in addition to mounting a volume at the root of the project that will contain the container data) and we will start them with the command:
+This will create 2 Docker containers (as well as mount a volume at the root of the project that will contain the container data), as well as boot them. If they were stopped, we will start them with the command:
 
 ```
-$ docker start go-postgres-db go-pgAdmin  # "docker stop go-postgres-db go-pgAdmin" to stop them.
+$ docker container start go-postgres-db go-pgAdmin  # "docker container stop go-postgres-db go-pgAdmin" to stop them.
 ```
 
 ---

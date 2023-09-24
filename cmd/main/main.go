@@ -36,8 +36,11 @@ func main() {
 	})
 
 	web := fiber.New()
-	web.Static("/", "./pkg/web/public")
+	web.Static("/", "./pkg/web/public", fiber.Static{
+		Index: "main.html",
+	}) // VER NOTA ABAJO: (SERVIR FICHEROS ESTÁTICOS DESDE SUBRUTAS)
 	routes.WebSetUp(web)
+
 	micro := fiber.New()
 
 	app.Mount("/", web)
@@ -93,5 +96,16 @@ func main() {
 curl -v -X POST http://localhost:5500/api/auth/login -d '{ "email": "enrique@enrique.com", "password": "123456" }' -H "content-type: application/json" | json_p
 
 curl --cookie "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTUzODg2ODUsImlhdCI6MTY5NTM4NTA4NSwibmJmIjoxNjk1Mzg1MDg1LCJzdWIiOiI3NmE1MGIxNC03MTg2LTQ3YTgtYmQzYi1iYTZhMmY3M2JkMzcifQ.CWOeSLqdmWmP9rgIGgRdS_eNxGCE8fjiIGvL6X6S4yg" -v http://localhost:5500/api/auth/logout -H "content-type: application/json" | json_pp
+
+*/
+
+/* SERVIR FICHEROS ESTÁTICOS DESDE SUBRUTAS. VER:
+
+https://github.com/gofiber/fiber/issues/231
+
+ES IMPORTANTE QUE LAS RUTAS A LOS FICHEROS ESTÁTICOS COMIENZEN POR "/",
+ES DECIR: [<link rel="stylesheet" href="/css/output.css">], O BIEN,
+[<link rel="shortcut icon" href="/img/gopher-svgrepo-com.svg" type="image/svg+xml">] EN EL ARCHIVO REFERENCIADO EN LA CONFIGURACIÓN
+fiber.Static{ Index: main.html}, que, en este caso en main.html
 
 */
