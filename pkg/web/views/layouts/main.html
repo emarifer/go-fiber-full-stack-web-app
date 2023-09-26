@@ -12,6 +12,26 @@
     <link rel="stylesheet" href="/css/output.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.28/dist/sweetalert2.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.28/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        window.navigator.userAgent.includes('Chrome')
+            ? (() => {
+                window.onpageshow = (event) => {
+                    if (event.persisted) {
+                        window.location.reload();
+                    }
+                };
+            })()
+            : (() => {
+                window.onpageshow = (event) => {
+                    let perfEntries = performance.getEntriesByType("navigation");
+
+                    if (perfEntries[0].type === "back_forward") {
+                        location.reload();
+                    }
+                };
+            })();
+    </script>
 </head>
 
 <body>
@@ -21,3 +41,24 @@
 </body>
 
 </html>
+
+<!-- 
+    
+    ES NECESARIO COLOCAR EL SCRIPT AQUÍ, POR QUE EL USO DEL
+    BACK/FORWARD DEL NAVEGADOR NOS HARÍA RETROCEDER A LAS
+    PÁGINAS DE LOGIN/SIGNUP CUANDO ESTAMOS LOGEADOS O, LO QUE
+    ES PEOR, VOLVER A HOME/PROFILE CUANDO NO ESTAMOS LOGEADOS.
+    LA RECARGA NORMAL O LA NAVEGACIÓN BACK/FORWARD DENTRO DEL
+    ESTADO LOGEADO/DESLOGEADO SI LA PERMITE ESTE SCRIPT. LO QUE
+    NO PERMITE ES LA NAVEGACIÓN BACK/FORWARD ENTRE ESTADOS LOGEADO/
+    DESLOGEADO. ACTÚA VERIFICANDO QUE EL NAVEGADOR NO ESTÉ SERVIENDO
+    DESDE EL BFCACHÉ, LO QUE SUCEDE SI SE PULSA EL BOTÓN ATRÁS/DELANTE,
+    IMPIDIENDO LA RECARGA NORMAL Y QUE, POR TANTO, ACTÚE LA VERIFICACIÓN QUE
+    HACEN LOS WEBCONTROLLERS. EL DIFERENTE COMPORTAMIENTO DE CHROME vs. FIREFOX,
+    HACE NECESARIO UNA VERIFICACIÓN DEL "user-agent". MÁS DETALLES AQUÍ:
+
+https://stackoverflow.com/questions/43043113/how-to-force-reloading-a-page-when-using-browser-back-button
+https://web.dev/bfcache/
+https://developer.mozilla.org/en-US/docs/Web/API/Window/pageshow_event
+
+ -->

@@ -8,7 +8,6 @@ import (
 
 func WebSetUp(app *fiber.App) {
 	// *** any route below this line will need the data provided by this middleware =>
-	// app.Use(webMiddleware.DeserializeUser)
 	app.Use(middleware.DeserializeUser)
 	app.Get("/", webControllers.LoginPageHandler)
 	app.Get("/signup", webControllers.SignUpPageHandler)
